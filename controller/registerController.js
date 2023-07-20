@@ -4,13 +4,24 @@ async function handleRegister(req, res) {
   try {
     const { username, email, password } = req.body;
 
+    // Validar o tamanho da senha
+    if (!password) {
+      res.status(400).json({ message: "Por favor, forneça uma senha válida" });
+      return;
+    }
+
+    // Validar o tamanho da senha
+    if (password.length <= 6 || password.length > 20) {
+      res.status(400).json({ message: "A senha deve ter entre 6 e 20 caracteres" });
+      return;
+    }
+
     // Verificar se o username, email e senha foram fornecidos
     if (!username || !email || !password) {
       res.status(400).json({ message: "Por favor, forneça um nome de usuário, email e senha válidos" });
       return;
     }
 
-    // Verificar se o usuário já existe no banco de dados
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
     if (existingUser) {
