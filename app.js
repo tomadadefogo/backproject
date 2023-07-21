@@ -11,6 +11,6 @@ db.connect()
 app.use("", router)
 
 
-app.listen(3000, ()=> {
+app.listen(3002, ()=> {
   console.log("Nodemon Funcionando")
 })

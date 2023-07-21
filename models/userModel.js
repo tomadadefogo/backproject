@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
   },
   password: {
-    type: Number,
+    type: String, // Agora o campo password é definido como Number
     required: true,
     validate: {
       validator: function (password) {
@@ -28,18 +28,17 @@ const userSchema = new mongoose.Schema({
     },
   },
 },
-{timestamps: true }
+{ timestamps: true }
 );
-
-userSchema.methods.comparePassword = function (candidatePassword) {
-  return candidatePassword === this.password;
-};
-
 function isValidPassword(password) {
   const passwordString = password.toString();
   return passwordString.length >= 6 && passwordString.length <= 20;
 }
 
+userSchema.methods.comparePassword = function (candidatePassword) {
+  return candidatePassword === this.password.toString();
+};
+
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+module.exports = { User, isValidPassword };

@@ -1,12 +1,13 @@
-const User = require("../models/userModel");
+const { User, isValidPassword } = require("../models/userModel");
 
 async function handleRegister(req, res) {
   try {
     const { username, email, password } = req.body;
+    console.log("Dados recebidos:", { username, email, password });
 
-    // Validar o tamanho da senha
-    if (!password) {
-      res.status(400).json({ message: "Por favor, forneça uma senha válida" });
+    // Verificar se o username, email e senha foram fornecidos
+    if (!username || !email || !password) {
+      res.status(400).json({ message: "Por favor, forneça um nome de usuário, email e senha válidos" });
       return;
     }
 
@@ -16,9 +17,9 @@ async function handleRegister(req, res) {
       return;
     }
 
-    // Verificar se o username, email e senha foram fornecidos
-    if (!username || !email || !password) {
-      res.status(400).json({ message: "Por favor, forneça um nome de usuário, email e senha válidos" });
+    // Validar a senha usando a função isValidPassword do modelo
+    if (!isValidPassword(password)) {
+      res.status(400).json({ message: "Senha inválida" });
       return;
     }
 

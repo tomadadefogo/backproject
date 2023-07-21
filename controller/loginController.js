@@ -1,24 +1,24 @@
-const User = require("../models/userModel");
+const { User } = require("../models/userModel");
 
 async function handleLogin(req, res) {
   try {
-    const { username, email, password } = req.body;
+    const { emailOrUsername, password } = req.body;
 
-    // Verificar se o username, email e senha foram fornecidos
-    if ((!username && !email) || !password) {
-      res.status(400).json({ message: "Por favor, forneça um nome de usuário ou email e senha válidos" });
+    // Verificar se o emailOrUsername e senha foram fornecidos
+    if (!emailOrUsername || !password) {
+      res.status(400).json({ message: "Por favor, forneça um e-mail ou nome de usuário e senha válidos" });
       return;
     }
 
-    // Verificar se o usuário existe no banco de dados com base em username e email
-    const user = await User.findOne({ $or: [{ username }, { email }] });
+    // Verificar se o usuário existe no banco de dados com base no email ou username
+    const user = await User.findOne({ $or: [{ username: emailOrUsername }, { email: emailOrUsername }] });
 
     if (!user) {
       res.status(404).json({ message: "Usuário não encontrado" });
       return;
     }
 
-    // Verificar se o username, email e senha correspondem aos dados registrados
+    // Verificar se a senha corresponde aos dados registrados
     if (!user.comparePassword(password)) {
       res.status(401).json({ message: "Credenciais de login inválidas" });
       return;
