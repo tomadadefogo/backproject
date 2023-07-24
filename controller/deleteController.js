@@ -2,9 +2,9 @@ const User = require("../models/userModel");
 
 async function handleDelete(req, res) {
   try {
-    const { id } = req.params; // Obter o ID do usuário a partir da URL
+    const { id } = req.params; 
 
-    // Verificar se o usuário existe no banco de dados
+    
     const user = await User.findById(id);
 
     if (!user) {
@@ -12,7 +12,7 @@ async function handleDelete(req, res) {
       return;
     }
 
-    // Deletar o usuário do banco de dados
+    
     await User.deleteOne({ _id: id });
 
     res.status(200).json({ message: "Conta do usuário deletada com sucesso" });

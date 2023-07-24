@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    // Validar o formato do email usando regex
     validate: {
       validator: function (email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -18,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
   },
   password: {
-    type: String, // Agora o campo password é definido como Number
+    type: String, 
     required: true,
     validate: {
       validator: function (password) {
